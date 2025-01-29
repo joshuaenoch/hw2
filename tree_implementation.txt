@@ -1,0 +1,30 @@
+Decision tree class:
+  variables - head node and data
+
+  calculate all ginis function:
+    - takes in an array of attributes
+    - returns the smallest gini value from the array of attributes
+
+  is leaf function:
+    - return if the node meets the criteria of being a leaf or not
+
+  recursive splitting algorithm function:
+    - takes in the Node getting split and an array of attributes yet to be split
+    - if the node meets the condition of the is leaf function, stop splitting (return nothing)
+    - else:
+      - splitting on: the smallest gini from the node options from the calculate all ginis function
+      - remove the splitting on variable from the node options array
+      - create a node on the left based on the smaller gini score of the outcomes of the attributes
+      - create a node on the right based on the larger gini score of the outcomes of the attributes
+      - call the split method on the left node with the shortened node options array
+      - call the split method on the right node with the shortened node options array
+
+Node class:
+  variables: left node, right node, total data, array of each possible outcome with their count, binary array of each possible outcome with their count
+
+  function to deal with outcomes with more than 2 outcomes:
+    - if the array length is two, copy it to the binary array
+    - else if the outcomes are numeric:
+      - add the maximum and minimum value and divide by two to get the midpoint
+      - split the outcomes on below or above the midpoint
+    - if its categorical do one hot encoding and then do from the above

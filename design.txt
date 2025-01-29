@@ -1,0 +1,20 @@
+Step 1 Design the Decision Tree Structure:
+
+Define the structure of a tree node (e.g., attributes for splitting criteria, left/right child pointers, leaf labels).
+
+Attribute for splitting: Gini Index
+Leaf nodes: Survied vs Not Survived
+
+Outline the design of the tree-building process (e.g., recursive splitting, stopping conditions).
+Binary splitting but if there's a node that has more than 2 options split two by two like 1, 2, 3 -> 1 and 2, 3 and then 1, 2
+
+Step 2: Implement the Tree-Building Algorithm
+Input: Titanic data set
+
+1.)Write a function to calculate impurity (e.g., Shannon entropy or Gini index).
+~Gini Index
+
+2.) Implement a recursive function to split data based on impurity reduction and grow the tree.
+
+
+
