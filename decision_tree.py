@@ -3,9 +3,19 @@
 # 3. Set stopping conditions to prevent infinite recursion (e.g., max depth, min samples per split, pure nodes).
 from collections import Counter
 class DecisionTree:
-    def __init__(self, data):
-        self.head = Node
-        self.data = data
+    # we might need hyperparamters based on the rubric, like max-depth
+    def __init__(self, data, ):
+        #self.head = Node
+        #self.data = data #training data passed into fit
+        self.root = None #acts as root node, will use this to build tree in fit()
+        pass
+
+    def fit(self, X, y):
+        self.root = self.tree_builder(X, y)
+
+    # tree builder makes calls to our split() method
+    # this method will use recursion to build our tree 
+    def tree_builder(self, X, y):
         pass
 
     def gini(self,n, total):
@@ -23,10 +33,7 @@ class DecisionTree:
         ans = 1
         counter = Counter(self.data)
         for x in counter:
-            ans = ans -(x / len(co)nter)
-*
-
-
+            ans = ans -(x / len(counter))
 
 
     def split(self, node, node_options):
@@ -48,6 +55,8 @@ class DecisionTree:
     def isleaf():
         pass
 
+    def predict(self, X):
+        pass
 
 class Node():
     def __init__(self, feature=None, threshold=None, left=None, right=None, values=None, options=None, gini=None):
@@ -60,5 +69,4 @@ class Node():
         self.gini = gini
 
     def dealWithNonBinary(self, ):
-
-
+        pass
