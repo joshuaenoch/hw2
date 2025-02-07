@@ -1,7 +1,11 @@
 import os
 import pandas as pd
-from sklearn.model_selection import train_test_split
 from decision_tree import DecisionTree
+from metric_evaluation import MetricEvaluation
+from sklearn.model_selection import train_test_split
+
+#from sklearn.tree import DecisionTreeClassifier
+#from sklearn.metrics import classification_report
 
 # load csv files
 find_dir = os.path.dirname(os.path.abspath(__file__))
@@ -20,3 +24,28 @@ train_X, test_X, train_y, test_y = train_test_split(X, y, test_size=0.1, random_
 dt = DecisionTree()
 # dt.fit(train_X, train_y)
 # preds = dt.predict(test_X)
+
+####################################
+## Steps to test/apply metrics
+####################################
+
+## use scikit to create a tree to test metric functions
+#dt = DecisionTreeClassifier()
+#dt.fit(train_X, train_y)
+#preds = dt.predict(test_X)
+#print(classification_report(test_y,preds))
+
+## display metric evaluations
+#metric = MetricEvaluation(test_y.to_numpy(),preds)
+
+#acc = metric.accuracy_score()
+#print("Accuracy: " + str(acc) + "%")
+
+#prec = metric.precision_score()
+#print("Precision: " + str(prec) + "%")
+
+#rec = metric.recall_score()
+#print("Recall: " + str(rec) + "%")
+
+#f1 = metric.f1_score()
+#print("F1-Score: " + str(f1) + "%")
