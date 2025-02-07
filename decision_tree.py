@@ -19,13 +19,19 @@ class DecisionTree:
         pass
 
     def gini(self,n, total):
-        return 1 - ((n / total) ** 2)
+            return ((n**2) / (total**2))
 
-    def gini_all(self, options):
-         order = options
-         for i in range(len(options)):
-             order[i] = gini(options[i].n, options[i].total)
-         return order
+    # anthony is going to finish this but its complete  rn
+    def gini_all(self, node_options):
+        ginivalues = []
+        for n in range(len(self.data[0])):
+            counter = Counter(self.data[:, n])
+            ans = 1
+            total = counter.total()
+            for x in counter.values():
+                ans -= self.gini(x, total)
+            ginivalues.append(ans)
+        return ginivalues
 
     # anthony is going to finish this but its complete  rn
     def why_did_I_do_this(self):
@@ -41,15 +47,15 @@ class DecisionTree:
             return
         else:
             # get the best option
-            splitting_on = gini_all(node_options)
+            splitting_on = self.gini_all(node_options)
             # remove that option
             node_options = node_options.remove(splitting_on)
             # grow on left and split on it
             node.left = Node(values=splitting_on.options[0])
-            split(node.left, node_options)
+            self.split(node.left, node_options)
             # grow on right and split on it
             node.left = Node(values=splitting_on.options[1])
-            split(node.right, node_options)
+            self.split(node.right, node_options)
 
 
     def isleaf():
