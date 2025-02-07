@@ -14,7 +14,7 @@ class DecisionTree:
         self.root = self.tree_builder(X, y)
 
     # tree builder makes calls to our split() method
-    # this method will use recursion to build our tree 
+    # this method will use recursion to build our tree
     def tree_builder(self, X, y):
         pass
 
