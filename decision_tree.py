@@ -60,6 +60,11 @@ class DecisionTree:
     def split(self, node, node_options, depth, X, y):
         # takes in the gini values of all remaining features of data
         ginivalues = self.gini_all(node_options, X)
+        
+        # break if no gini values
+        if len(ginivalues) <= 0:
+            return None
+        
         # selects the attribute to be split on based on gini values
         splitting_on = node_options[ginivalues.index(min(ginivalues))]
 
@@ -171,14 +176,43 @@ class DecisionTree:
         return predictions
 
 
-# testing the tree on train.csv (titanic dataset)
-data = pd.read_csv("train.csv")
-dt = DecisionTree(5, 10)
-y = "Survived"
-dt.tree_builder(data, y)
-y_pred = dt.predict(data)
-#print(y_pred)
+# # testing the tree on train.csv (titanic dataset)
+# data = pd.read_csv("train.csv")
+# dt = DecisionTree(5, 10)
+# y = "Survived"
+# dt.tree_builder(data, y)
+# y_pred = dt.predict(data)
+# #print(y_pred)
 
+# metric = MetricEvaluation(data[y].to_numpy(),y_pred)
+# #accuracy
+# acc = metric.accuracy_score()
+# print("Accuracy: " + str(acc) + "%")
+# #precision
+# prec = metric.precision_score()
+# print("Precision: " + str(prec) + "%")
+# #recall 
+# rec = metric.recall_score()
+# print("Recall: " + str(rec) + "%")
+# #f1
+# f1 = metric.f1_score()
+# print("F1-Score: " + str(f1) + "%")
+
+
+print("Testing Dummies")
+print("=====================")
+data = pd.read_csv("train.csv")
+features = ["Pclass", "Sex", "SibSp", "Parch", "Age", "Cabin", "Survived"]
+X = data[features]
+X = pd.get_dummies(X)
+y = "Survived"
+
+# build decision tree
+dt = DecisionTree(5, 10)
+dt.tree_builder(X, y)
+y_pred = dt.predict(X)
+
+# evaluate metrics
 metric = MetricEvaluation(data[y].to_numpy(),y_pred)
 #accuracy
 acc = metric.accuracy_score()
