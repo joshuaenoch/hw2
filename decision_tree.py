@@ -5,7 +5,7 @@
 
 import pandas as pd
 from collections import Counter
-
+from metric_evaluation import MetricEvaluation
 
 # nodes for the decision tree that carries information for predictions
 class Node:
@@ -32,10 +32,6 @@ class DecisionTree:
         self.root = None
         self.max_depth = max_depth
         self.min_samples_split = min_samples_split
-
-    # have not implemented or tested this yet
-    def fit(self, X, y):
-        self.root = self.tree_builder(X, y, depth=0)
 
     # tree builder makes calls to our split() method
     # this method will use recursion to build our tree
@@ -181,4 +177,18 @@ dt = DecisionTree(5, 10)
 y = "Survived"
 dt.tree_builder(data, y)
 y_pred = dt.predict(data)
-print(y_pred)
+#print(y_pred)
+
+metric = MetricEvaluation(data[y].to_numpy(),y_pred)
+#accuracy
+acc = metric.accuracy_score()
+print("Accuracy: " + str(acc) + "%")
+#precision
+prec = metric.precision_score()
+print("Precision: " + str(prec) + "%")
+#recall 
+rec = metric.recall_score()
+print("Recall: " + str(rec) + "%")
+#f1
+f1 = metric.f1_score()
+print("F1-Score: " + str(f1) + "%")
