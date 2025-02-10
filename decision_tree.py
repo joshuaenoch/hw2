@@ -86,7 +86,7 @@ class DecisionTree:
 
         # if there are no more attributes or the max depth or minimum rows have
         # been breached, stop splitting and create a leaf node
-        if ( # TODO: ake it so that the None won't throw an error here
+        if (  # TODO: ake it so that the None won't throw an error here
             len(node_options) <= 0
             or depth >= self.max_depth
             or len(X) <= self.min_samples_split
@@ -181,15 +181,18 @@ class DecisionTree:
 data = pd.read_csv("train.csv")
 dt = DecisionTree(5, 10)
 y = "Survived"
-dt.tree_builder(data, y)
-y_pred = dt.predict(data)
+features = ["Pclass", "Sex", "SibSp", "Parch"]
+X = pd.get_dummies(data[features] + data["Survived"])
+print(X.columns)
+dt.tree_builder(X, y)
+y_pred = dt.predict(X)
 
-metric = MetricEvaluation(data[y].to_numpy(), y_pred)
-acc = metric.accuracy_score()
-print("Accuracy: ", acc, "%")
-prec = metric.precision_score()
-print("Precision: ", prec, "%")
-rec = metric.recall_score()
-print("Recall: ", rec, "%")
-f1 = metric.f1_score()
-print("F1 Score: ", f1, "%")
+# metric = MetricEvaluation(data[y].to_numpy(), y_pred)
+# acc = metric.accuracy_score()
+# print("Accuracy: ", acc, "%")
+# prec = metric.precision_score()
+# print("Precision: ", prec, "%")
+# rec = metric.recall_score()
+# print("Recall: ", rec, "%")
+# f1 = metric.f1_score()
+# print("F1 Score: ", f1, "%")
