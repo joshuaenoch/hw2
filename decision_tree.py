@@ -29,7 +29,7 @@ class Node:
 
 class DecisionTree:
     # initializer
-    def __init__(self, max_depth=None, min_samples_split=None):
+    def __init__(self, max_depth=float("inf"), min_samples_split=1):
         self.root = None
         self.max_depth = max_depth
         self.min_samples_split = min_samples_split
@@ -62,21 +62,28 @@ class DecisionTree:
         return ginivalues
 
     # recursive method to build the tree
+    # recursive method to build the tree
     def split(self, node, node_options, depth, X, y):
         # takes in the gini values of all remaining features of data
         ginivalues = self.gini_all(node_options, X)
+
+        # break if no gini values
+        if len(ginivalues) <= 0:
+            return None
+
         # selects the attribute to be split on based on gini values
         splitting_on = node_options[ginivalues.index(min(ginivalues))]
-        print(splitting_on)
 
         # the threshhold is the value of the attribute to be split based on
-
         # handling different data types (categorical vs continuous)
         attribute_type = X[splitting_on].dtype
         # if the data is categorical, the threshhold is the most common value
         if attribute_type == "object":
             # temporary solution to issue where the mode is not a series
-            if not isinstance(X[splitting_on].mode(), pd.Series):
+            if (
+                not isinstance(X[splitting_on].mode(), pd.Series)
+                or X[splitting_on].mode().empty
+            ):
                 threshhold = X[splitting_on].mode()
             else:
                 threshhold = X[splitting_on].mode()[0]
@@ -86,7 +93,7 @@ class DecisionTree:
 
         # if there are no more attributes or the max depth or minimum rows have
         # been breached, stop splitting and create a leaf node
-        if (  # TODO: ake it so that the None won't throw an error here
+        if (  # TODO: make it so that the None won't throw an error here
             len(node_options) <= 0
             or depth >= self.max_depth
             or len(X) <= self.min_samples_split
@@ -130,11 +137,19 @@ class DecisionTree:
             # split the data based on the threshhold of the splitting_on
             # attribute and pass them down to their respective nodes
             if attribute_type == "object":
+
+                # final check
+                if isinstance(threshhold, pd.Series):
+                    if threshhold.empty:
+                        threshhold = X[splitting_on].iloc[0]
+                    else:
+                        threshhold = threshhold.iloc[0]
+
                 X_left = X[X[splitting_on] == threshhold]
                 X_right = X[X[splitting_on] != threshhold]
             else:
                 X_left = X[X[splitting_on] < threshhold]
-                X_right = X[X[splitting_on] > threshhold]
+                X_right = X[X[splitting_on] >= threshhold]
             node.left = self.split(node.left, node_options, depth, X_left, y)
             node.right = self.split(node.right, node_options, depth, X_right, y)
 
@@ -145,6 +160,7 @@ class DecisionTree:
     # target variable is specified during tree building, not sure if it was
     # supposed to be done here instead
     def predict(self, X):
+        print("is predicting")
         # the list of predicted values
         predictions = []
 
@@ -158,7 +174,10 @@ class DecisionTree:
                 # for categorical values, search based on whether the value is
                 # the same as the threshhold (most common value)
                 if node.attribute_type == "object":
-                    if row[node.feature] == node.threshhold:
+                    # ignoring series bug
+                    if isinstance(node.threshhold, pd.Series):
+                        node = node.left
+                    elif row[node.feature] == node.threshhold:
                         node = node.left
                     else:
                         node = node.right
@@ -178,21 +197,19 @@ class DecisionTree:
 
 
 # testing the tree on train.csv (titanic dataset)
-data = pd.read_csv("train.csv")
-dt = DecisionTree(5, 10)
+X = pd.read_csv("train.csv")
+dt = DecisionTree(10, 100)
 y = "Survived"
-features = ["Pclass", "Sex", "SibSp", "Parch"]
-X = pd.get_dummies(data[features] + data["Survived"])
 print(X.columns)
 dt.tree_builder(X, y)
 y_pred = dt.predict(X)
 
-# metric = MetricEvaluation(data[y].to_numpy(), y_pred)
-# acc = metric.accuracy_score()
-# print("Accuracy: ", acc, "%")
-# prec = metric.precision_score()
-# print("Precision: ", prec, "%")
-# rec = metric.recall_score()
-# print("Recall: ", rec, "%")
-# f1 = metric.f1_score()
-# print("F1 Score: ", f1, "%")
+metric = MetricEvaluation(X[y].to_numpy(), y_pred)
+acc = metric.accuracy_score()
+print("Accuracy: ", acc, "%")
+prec = metric.precision_score()
+print("Precision: ", prec, "%")
+rec = metric.recall_score()
+print("Recall: ", rec, "%")
+f1 = metric.f1_score()
+print("F1 Score: ", f1, "%")

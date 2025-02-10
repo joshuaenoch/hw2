@@ -1,0 +1,10 @@
+1. Identifies overfitting/underfitting issues.
+- overfitting definitely will occur if
+
+2. Discusses the impact of hyperparameters like depth, splits, etc.
+
+
+3. Provides recommendations for improvement
+-
+-
+-
