@@ -1,8 +1,3 @@
-# draft of deicison
-# TODO:
-# - fit method
-# - series from .mode issue
-
 import pandas as pd
 from collections import Counter
 from metric_evaluation import MetricEvaluation

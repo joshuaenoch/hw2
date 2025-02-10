@@ -1,10 +1,20 @@
 1. Identifies overfitting/underfitting issues.
-- overfitting definitely will occur if
+- For the split method, overfitting and underfitting issues will both occur
+depending on the hyperperameters of max depth and min samples. Setting max depth
+too high means the tree basically memorizes the patterns of the training data
+and tries to apply it to the other datasets. The same goes for setting minimum
+samples too low. On the contrary, setting max depth too low or min samples too
+high means the tree stops before it can learn enough about the data to detect
+patterns. The specifics of too much or too little of these parameters will be
+covered in the next question.
 
 2. Discusses the impact of hyperparameters like depth, splits, etc.
 
 
 3. Provides recommendations for improvement
--
+- For the split method:
+  - more complex ways of splitting can used, rather than basing it off the most
+  common value for better accuracy. This could include utilizing individual
+  ginis of specific attribute values to decide how the split works
 -
 -
