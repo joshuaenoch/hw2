@@ -1,7 +1,5 @@
 import pandas as pd
 from collections import Counter
-from metric_evaluation import MetricEvaluation
-
 
 # nodes for the decision tree that carries information for predictions
 class Node:
@@ -155,7 +153,6 @@ class DecisionTree:
     # target variable is specified during tree building, not sure if it was
     # supposed to be done here instead
     def predict(self, X):
-        print("is predicting")
         # the list of predicted values
         predictions = []
 
@@ -189,22 +186,3 @@ class DecisionTree:
 
         # return the list
         return predictions
-
-
-# testing the tree on train.csv (titanic dataset)
-X = pd.read_csv("train.csv")
-dt = DecisionTree(10, 100)
-y = "Survived"
-print(X.columns)
-dt.tree_builder(X, y)
-y_pred = dt.predict(X)
-
-metric = MetricEvaluation(X[y].to_numpy(), y_pred)
-acc = metric.accuracy_score()
-print("Accuracy: ", acc, "%")
-prec = metric.precision_score()
-print("Precision: ", prec, "%")
-rec = metric.recall_score()
-print("Recall: ", rec, "%")
-f1 = metric.f1_score()
-print("F1 Score: ", f1, "%")

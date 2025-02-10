@@ -1,20 +1,16 @@
 1. Identifies overfitting/underfitting issues.
-- For the split method, overfitting and underfitting issues will both occur
-depending on the hyperperameters of max depth and min samples. Setting max depth
-too high means the tree basically memorizes the patterns of the training data
-and tries to apply it to the other datasets. The same goes for setting minimum
-samples too low. On the contrary, setting max depth too low or min samples too
-high means the tree stops before it can learn enough about the data to detect
-patterns. The specifics of too much or too little of these parameters will be
-covered in the next question.
+Although we were able to reduce overfitting and underfitting issues to an extent by implementing functioning hyperparameters such as max depth and min samples split, our evaluation metrics indicate potential issues with underfitting. Specifically, with metrics such as recall and F-1 score. Although our accuracy (69%) and precision (70%) were decent, our recall was 33% and F1-Score was 45%. These lower percentages could translate to misclassifying positive instances and underfitting due to a failure in identifying patterns in the data. 
+
+Additionally, we were not able to make train_test_split() work with our decision tree which could contribute to overfitting by creating deeper trees. Regarding underfitting, not being able to use test data increases the odds that our model is only performing well on learned data, not being able to make accurate predictions on unseen data. 
+
+For the split method, overfitting and underfitting issues will both occur depending on the hyperperameters of max depth and min samples. Setting max depth too high means the tree basically memorizes the patterns of the training data and tries to apply it to the other datasets. The same goes for setting minimum samples too low. On the contrary, setting max depth too low or min samples too high means the tree stops before it can learn enough about the data to detect
 
 2. Discusses the impact of hyperparameters like depth, splits, etc.
+Being able to create functioning hyperparameters of max depth and min samples split helped increas our metric evaluations. A max depth of 5 and min samples split of 10 led to our accuracy and precision scores being in the 60-70% range and our recall and F1-score being in the 30-40% range. The highest range for these parameters that allowed these percetnages to increase was a max depth of 10 and min samples split of 90. The led to an accuracy of 72%, precision of 64%, recall of 65%, and F-1 of 64%. Although this boosted our recall and F1, having to increase these parameters to such a degree indicate that our model isn't accurate enough to capture patterns at lower values. 
 
+On the lower end, adjusting both max depth and min samples split to 1 each led to a significant decline in recall (1%) and F1-score (2%) while accuracy (62%) and precision (71%) stayed in the 60-70% range. Both of these low values for these parameters indicate signs of underftting and an inability to capture patterns. 
 
 3. Provides recommendations for improvement
-- For the split method:
-  - more complex ways of splitting can used, rather than basing it off the most
-  common value for better accuracy. This could include utilizing individual
-  ginis of specific attribute values to decide how the split works
--
--
+Two methods that would have improved our model would have been able to integrate one hot encoding for categorical columns and being able to use testing methods like cross validation or test_train_split(). With one hot encoding, this would have allowed our model to better handle categorical columns and establish relationships between labels that would have made our predictions stronger. With establishing testing and validation, we could have more confidence in our metric evaluations. Additionally, we'd be able to better guarantee that our model can work well with new data. 
+
+For the split method, more complex ways of splitting can used, rather than basing it off the most common value for better accuracy. This could include utilizing individual ginis of specific attribute values to decide how the split works.
