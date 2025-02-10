@@ -5,6 +5,7 @@
 
 import pandas as pd
 from collections import Counter
+from metric_evaluation import MetricEvaluation
 
 
 # nodes for the decision tree that carries information for predictions
@@ -66,6 +67,7 @@ class DecisionTree:
         ginivalues = self.gini_all(node_options, X)
         # selects the attribute to be split on based on gini values
         splitting_on = node_options[ginivalues.index(min(ginivalues))]
+        print(splitting_on)
 
         # the threshhold is the value of the attribute to be split based on
 
@@ -84,7 +86,7 @@ class DecisionTree:
 
         # if there are no more attributes or the max depth or minimum rows have
         # been breached, stop splitting and create a leaf node
-        if (
+        if ( # TODO: ake it so that the None won't throw an error here
             len(node_options) <= 0
             or depth >= self.max_depth
             or len(X) <= self.min_samples_split
@@ -181,4 +183,13 @@ dt = DecisionTree(5, 10)
 y = "Survived"
 dt.tree_builder(data, y)
 y_pred = dt.predict(data)
-print(y_pred)
+
+metric = MetricEvaluation(data[y].to_numpy(), y_pred)
+acc = metric.accuracy_score()
+print("Accuracy: ", acc, "%")
+prec = metric.precision_score()
+print("Precision: ", prec, "%")
+rec = metric.recall_score()
+print("Recall: ", rec, "%")
+f1 = metric.f1_score()
+print("F1 Score: ", f1, "%")
