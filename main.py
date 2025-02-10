@@ -1,4 +1,3 @@
-import os
 import pandas as pd
 from decision_tree import DecisionTree
 from metric_evaluation import MetricEvaluation
